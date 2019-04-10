@@ -1,0 +1,28 @@
+﻿<Window x:Class="UploadManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UploadManager"
+        mc:Ignorable="d"
+        Background="AntiqueWhite"
+        Title="MainWindow" Height="259.517" Width="580.112">
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="229*"/>
+            <ColumnDefinition Width="80*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+            <Label Content="Url:" HorizontalAlignment="Left" Background="Aqua" Margin="40,84,0,0" VerticalAlignment="Top" Width="auto" RenderTransformOrigin="1.434,0.549"/>
+            <TextBox x:Name="UrlTxtBox" HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible" Margin="50,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxHeight="30" Width="138"/>
+            <StackPanel Orientation="Vertical" Margin="40,29,0,0">
+                <Label Content="Log messages:"/>
+                <ListBox x:Name="Logs" Width="223" Height="150"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        <Button Content="Upload" HorizontalAlignment="Left" Margin="50,138,0,0" VerticalAlignment="Top" Width="80" Click="Button_Upload_Click" />
+        <Button Content="Cancel" Margin="0,138, 0, 0" Width="80" VerticalAlignment="Top" Click="Button_Cancel_Click" />
+    </Grid>
+</Window>
