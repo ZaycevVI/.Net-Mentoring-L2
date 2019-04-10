@@ -14,7 +14,11 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
             <Label Content="Url:" HorizontalAlignment="Left" Background="Aqua" Margin="40,84,0,0" VerticalAlignment="Top" Width="auto" RenderTransformOrigin="1.434,0.549"/>
-            <TextBox x:Name="UrlTxtBox" HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible" Margin="50,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxHeight="30" Width="138"/>
+            <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                <TextBox x:Name="UrlTxtBox1" HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible" Margin="30,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxHeight="30" Width="138"/>
+                <TextBox x:Name="UrlTxtBox2" HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible" Margin="30,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxHeight="30" Width="138"/>
+                <TextBox x:Name="UrlTxtBox3" HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible" Margin="30,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxHeight="30" Width="138"/>
+            </StackPanel>
             <StackPanel Orientation="Vertical" Margin="40,29,0,0">
                 <Label Content="Log messages:"/>
                 <ListBox x:Name="Logs" Width="223" Height="150"/>
@@ -22,7 +26,7 @@
 
         </StackPanel>
 
-        <Button Content="Upload" HorizontalAlignment="Left" Margin="50,138,0,0" VerticalAlignment="Top" Width="80" Click="Button_Upload_Click" />
-        <Button Content="Cancel" Margin="0,138, 0, 0" Width="80" VerticalAlignment="Top" Click="Button_Cancel_Click" />
+        <Button Content="Upload" HorizontalAlignment="Left" Margin="50,138,0,10" VerticalAlignment="Bottom" Width="80" Click="Button_Upload_Click" />
+        <Button Content="Cancel" Margin="0,138, 0, 10" Width="80" VerticalAlignment="Bottom" Click="Button_Cancel_Click" />
     </Grid>
 </Window>

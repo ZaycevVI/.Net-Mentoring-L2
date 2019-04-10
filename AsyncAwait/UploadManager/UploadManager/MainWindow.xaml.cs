@@ -17,7 +17,6 @@ namespace UploadManager
     {
         private delegate void CancelHandler();
         private event CancelHandler Cancel;
-        private int i = 0;
 
         public MainWindow()
         {
@@ -32,11 +31,20 @@ namespace UploadManager
             //{
                 try
                 {
-                    var url = new Uri(UrlTxtBox.Text);
-                    var content = await DownloadDataAsync(url);
-                    File.WriteAllText($"{i}.html", content);
-                    Interlocked.Increment(ref i);
-                    Logs.Items.Add($"Web page: {UrlTxtBox.Text} was downloaded successfully.");
+                    var url1 = new Uri(UrlTxtBox1.Text);
+                    var url2 = new Uri(UrlTxtBox2.Text);
+                    var url3 = new Uri(UrlTxtBox3.Text);
+                    var content1 = await DownloadDataAsync(url1);
+                    var content2 = await DownloadDataAsync(url2);
+                    var content3 = await DownloadDataAsync(url3);
+
+                    var task1 = Task.Run(() => File.WriteAllText($"{Guid.NewGuid()}.html", content1));
+                    var task2 = Task.Run(() => File.WriteAllText($"{Guid.NewGuid()}.html", content2));
+                    var task3 = Task.Run(() => File.WriteAllText($"{Guid.NewGuid()}.html", content3));
+
+                    await Task.WhenAll(task1, task2, task3);
+
+                    Logs.Items.Add($"Web pages: {url1}|{url2}|{url3} were downloaded successfully.");
                 }
                 catch (Exception exception)
                 {
@@ -48,8 +56,6 @@ namespace UploadManager
         private async Task<string> DownloadDataAsync(Uri uri)
         {
             var content = string.Empty;
-            var url = uri.ToString();
-
 
             if (string.IsNullOrWhiteSpace(uri.ToString()))
                 throw new ArgumentNullException(nameof(uri), @"Uri can not be null or empty.");
