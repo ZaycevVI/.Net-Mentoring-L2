@@ -1,0 +1,57 @@
+﻿<Window x:Class="OnlineShop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineShop"
+        mc:Ignorable="d" Background="Beige"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Background="Aqua"  VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Margin="10, 10" Orientation="Horizontal">
+                <Label Width="100">Product Name:</Label>
+                <TextBox Name="NameTxtBox" Width="150"></TextBox>
+            </StackPanel>
+            <StackPanel Margin="10, 10" Orientation="Horizontal">
+                <Label Width="100">Price:</Label>
+                <TextBox Width="150" Name="PriceTxtBox" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            </StackPanel>
+            <Button Width="100"  Margin="10, 10" Height="30" HorizontalAlignment="Right" Click="Button_Click">Add Product</Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <Label>List of chosen products:</Label>
+            <ListBox Name="ProductsListBox" Margin="0,0,20,0" Height="300" ItemsSource="{Binding}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Style.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="IsSelected" Value="True" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Name: " />
+                            <TextBlock Margin="10 0 0 0" Width="60" Text="{Binding Path=Name, Mode=TwoWay}" />
+                            <TextBlock Margin="50 0 0 0" Text="Price: " />
+                            <TextBox Text="{Binding Path=Price, Mode=TwoWay}" Width="60" PreviewTextInput="NumberValidationTextBox" />
+                            <TextBlock Margin="5 0 0 0" Text="USD" />
+                            <Button Margin="30 0 0 0" Name="RemoveBtn" Click="RemoveBtn_OnClick">Remove</Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Orientation="Horizontal" Margin="10, 10">
+                <Label>Total price:</Label>
+                <Label Name="PriceLabel" Content="{Binding Path=TotalPrice, Mode=OneWay}"></Label>
+                <Label>USD</Label>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
