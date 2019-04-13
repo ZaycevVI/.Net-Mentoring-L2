@@ -29,7 +29,6 @@ namespace OnlineShop
         {
             Products = new ObservableCollection<Product>();
             BindingOperations.EnableCollectionSynchronization(Products, _lock);
-
         }
 
         public Task AddAsync(Product product)
@@ -38,18 +37,7 @@ namespace OnlineShop
             {
                 Task.Delay(1000);
                 Products.Add(product);
-                product.PropertyChanged += UpdateAsync;
-                UpdatePriceAsync();
-            });
-        }
-
-        private void UpdateAsync(object sender, PropertyChangedEventArgs arg)
-        {
-            var product = (Product)sender;
-
-            Task.Run(() =>
-            {
-                Task.Delay(1000);
+                product.PropertyChanged += UpdatePriceAsync;
                 UpdatePriceAsync();
             });
         }
@@ -64,10 +52,10 @@ namespace OnlineShop
             });
         }
 
-        private void UpdatePriceAsync()
+        private void UpdatePriceAsync(object sender = null, PropertyChangedEventArgs arg = null)
         {
-            Task.Run(() => Task.Delay(1500)
-            .ContinueWith(task => TotalPrice = Products.Sum(p => p.Price)));
+            Task.Delay(1500)
+            .ContinueWith(task => TotalPrice = Products.Sum(p => p.Price));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
