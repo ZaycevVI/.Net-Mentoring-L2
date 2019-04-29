@@ -24,11 +24,7 @@ namespace MapperSample
             person.Age = 1212112121;
             cat = mapper.Map(person);
 
-            Console.WriteLine("==================================");
-            Console.WriteLine("==================================");
-            Console.WriteLine("==================================");
-
-
+            Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}");
             Print(cat, person);
         }
 
@@ -41,10 +37,10 @@ namespace MapperSample
             Console.WriteLine($"\tCustomField: {person.CustomField}");
             Console.WriteLine("==================================");
             Console.WriteLine("Cat instance:");
-            Console.WriteLine($"\t\tName: {cat.Name}");
-            Console.WriteLine($"\t\tAge: {cat.Age}");
-            Console.WriteLine($"\t\tSex: {cat.Sex}");
-            Console.WriteLine($"\t\tCustomField111111: {cat.CustomField111111}");
+            Console.WriteLine($"\tName: {cat.Name}");
+            Console.WriteLine($"\tAge: {cat.Age}");
+            Console.WriteLine($"\tSex: {cat.Sex}");
+            Console.WriteLine($"\tCustomField111111: {cat.CustomField111111}");
         }
     }
 

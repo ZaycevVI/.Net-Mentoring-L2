@@ -8,6 +8,8 @@ namespace MapperSample
 {
     public class MappingGenerator
     {
+        
+
         public Mapper<TSource, TDestination> Generate<TSource, TDestination>()
         {
             var sourceParam = Expression.Parameter(typeof(TSource));
@@ -27,6 +29,9 @@ namespace MapperSample
 
             var mapFunction = Expression.Lambda<Func<TSource, TDestination>>(
                 memberInit, sourceParam);
+
+            Console.WriteLine("Generated expression:");
+            Console.WriteLine($"{mapFunction}{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}");
 
             return new Mapper<TSource, TDestination>(mapFunction.Compile());
         }
