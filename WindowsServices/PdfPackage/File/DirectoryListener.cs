@@ -28,14 +28,37 @@ namespace PdfPackage.File
         {
             _inDir = inDir;
             _outDir = outDir;
+
+            TryCreateDirectory(_inDir);
+            TryCreateDirectory(_outDir);
+
             _watcher = new FileSystemWatcher(inDir);
             _watcher.Created += WatcherOnCreated;
             _stopwatch.Start();
         }
 
+        private void TryCreateDirectory(string dir)
+        {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
+
         public void Start()
         {
+            _currentImg = _prevImg = null;
+            _imgs.Clear();
+            var imgs = Directory.GetFiles(_inDir).Select(Path.GetFileName);
+
+            foreach (var img in imgs)
+            {
+                ProcNewImg(img);
+            }
+
+            CreateDoc();
             _watcher.EnableRaisingEvents = true;
+            _stopwatch.Restart();
         }
 
         public void Stop()
@@ -45,7 +68,12 @@ namespace PdfPackage.File
 
         private void WatcherOnCreated(object sender, FileSystemEventArgs fileSystemEventArgs)
         {
-            _currentImg = fileSystemEventArgs.Name;
+            ProcNewImg(fileSystemEventArgs.Name);
+        }
+
+        private void ProcNewImg(string img)
+        {
+            _currentImg = img;
 
             if (_imgNameValidator.Validate(_currentImg))
             {
@@ -53,14 +81,19 @@ namespace PdfPackage.File
 
                 if (IsEndOfDoc(_prevImg, _currentImg))
                 {
-                    CreatePdf(_imgs.ToArray());
-                    _imgs.Clear();
+                    CreateDoc();
                 }
 
                 _imgs.Add(_currentImg);
                 _prevImg = _currentImg;
                 _stopwatch.Restart();
             }
+        }
+
+        private void CreateDoc()
+        {
+            CreatePdf(_imgs.ToArray());
+            _imgs?.Clear();
         }
 
         private bool IsEndOfDoc(string prevImg, string nextImg)
@@ -79,7 +112,15 @@ namespace PdfPackage.File
 
         private void CreatePdf(params string[] imgPaths)
         {
-            _pdfGenerator.GenerateAsync($"{_outDir}\\{Guid.NewGuid()}.pdf", imgPaths.Select(img => $"{_inDir}\\{img}").ToArray());
+            _pdfGenerator.GenerateAsync(
+                $"{_outDir}\\{Guid.NewGuid()}.pdf", 
+                imgPaths.Select(img => $"{_inDir}\\{img}").ToArray());
+        }
+
+        ~DirectoryListener()
+        {
+            _watcher.Created -= WatcherOnCreated;
+            _watcher.Dispose();
         }
     }
 }

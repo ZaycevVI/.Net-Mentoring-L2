@@ -1,5 +1,4 @@
-﻿using PdfPackage.File;
-using Topshelf;
+﻿using Topshelf;
 
 namespace WindowsService
 {

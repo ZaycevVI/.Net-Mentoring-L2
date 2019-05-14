@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
@@ -9,7 +10,7 @@ namespace PdfPackage.Pdf
     public class PdfSharpGenerator : IPdfGenerator
     {
         private const int Attempts = 4;
-        private const int Delay = 1; // min
+        private const int Delay = 1; // minutes
         private const string BrokenDir = "C:\\broken";
 
         public Task GenerateAsync(string pdfPath, params string[] imgPaths)
@@ -63,7 +64,7 @@ namespace PdfPackage.Pdf
                 }
                 catch (IOException)
                 {
-                    Task.Delay(Delay * 60000).Wait();
+                    Thread.Sleep(Delay * 60000);
                 }
 
                 attempt++;
