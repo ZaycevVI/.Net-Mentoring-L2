@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Autofac;
-using Autofac.Core;
+﻿using Autofac;
 using PdfPackage.File;
 using PdfPackage.Pdf;
 using PdfPackage.Validator;
@@ -17,15 +15,12 @@ namespace WindowsService
         {
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterType<ImageNameValidator>().As<IValidator>();
-            containerBuilder.RegisterType<PdfSharpGenerator>().As<IPdfGenerator>();
-            containerBuilder.RegisterType<DirectoryListener>()
-                .As<IDirectoryListener>()
-                .WithParameters(new List<Parameter>
-                {
-                    new NamedParameter("inDir", InDir),
-                    new NamedParameter("outDir", OutDir),
-                });
+            containerBuilder.Register(ctx => LoggingProxy<IValidator>.Create(new ImageNameValidator())).As<IValidator>();
+            containerBuilder.Register(ctx => LoggingProxy<IPdfGenerator>.Create(new PdfSharpGenerator())).As<IPdfGenerator>();
+            containerBuilder.Register(ctx => LoggingProxy<IPathConverter>.Create(new PathConverter())).As<IPathConverter>();
+            containerBuilder.Register(ctx => LoggingProxy<IDirectoryListener>.Create(
+                new DirectoryListener(InDir, OutDir, ctx.Resolve<IValidator>(), 
+                    ctx.Resolve<IPdfGenerator>(), ctx.Resolve<IPathConverter>()))).As<IDirectoryListener>();
             var container = containerBuilder.Build();
 
             HostFactory.Run(conf =>

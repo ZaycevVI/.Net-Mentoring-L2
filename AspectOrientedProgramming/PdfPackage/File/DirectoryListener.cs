@@ -15,6 +15,7 @@ namespace PdfPackage.File
 
         private readonly IValidator _imgNameValidator;
         private readonly IPdfGenerator _pdfGenerator;
+        private readonly IPathConverter _pathConverter;
         private readonly FileSystemWatcher _watcher;
         private readonly Stopwatch _stopwatch = new Stopwatch();
         private const long Timeout = 100000; // 100 seconds
@@ -24,12 +25,14 @@ namespace PdfPackage.File
 
         private readonly List<string> _imgs = new List<string>();
 
-        public DirectoryListener(string inDir, string outDir, IValidator validator, IPdfGenerator pdfGenerator)
+        public DirectoryListener(string inDir, string outDir, IValidator validator, IPdfGenerator pdfGenerator, IPathConverter pathConverter)
         {
             _inDir = inDir;
             _outDir = outDir;
             _imgNameValidator = validator;
             _pdfGenerator = pdfGenerator;
+            _pathConverter = pathConverter;
+
             TryCreateDirectory(_inDir);
             TryCreateDirectory(_outDir);
 
@@ -105,8 +108,8 @@ namespace PdfPackage.File
             if (_currentDelay > Timeout)
                 return true;
 
-            var startNum = PathConverter.Convert(prevImg);
-            var nextNum = PathConverter.Convert(nextImg);
+            var startNum = _pathConverter.Convert(prevImg);
+            var nextNum = _pathConverter.Convert(nextImg);
 
             return nextNum - startNum != 1;
         }
